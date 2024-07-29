@@ -14,5 +14,19 @@ namespace SuperBestFriends.Business.Extensions
                 LastName = user.LastName
             };
         }
+
+        public static UserAdminDto UserAdminToDto(this User userAdmin)
+        {
+            return new UserAdminDto
+            {
+                UserId = userAdmin.UserId,
+                FirstName = userAdmin.FirstName,
+                LastName = userAdmin.LastName,
+                Email = userAdmin.Email,
+                BirthDate = userAdmin.BirthDate,
+                PhoneNumber = userAdmin.PhoneNumber,
+                Interests = userAdmin.Interests
+            };
+        }
     }
 }
