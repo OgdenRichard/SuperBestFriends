@@ -10,8 +10,4 @@
     <ProjectReference Include="..\SuperBestFriends.DAL\SuperBestFriends.DAL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Extensions\" />
-  </ItemGroup>
-
 </Project>
