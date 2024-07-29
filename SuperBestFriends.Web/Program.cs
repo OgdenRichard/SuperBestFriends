@@ -1,7 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using SuperBestFriends.Web.DAL;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<FriendsDbContext>(
+    options => options.UseSqlServer(builder.Configuration.GetConnectionString("FriendsDbContext"))
+);
 
 var app = builder.Build();
 
