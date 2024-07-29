@@ -11,6 +11,10 @@ namespace SuperBestFriends.Web.DAL
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>()
+                        .HasIndex(p => p.Email)
+                        .IsUnique();
         }
     }
 
