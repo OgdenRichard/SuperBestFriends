@@ -17,7 +17,7 @@ namespace SuperBestFriends.Business.Services
         // Récupération de tous les utilisateurs
         public List<UserDto> GetAll()
         {
-            return this.dbContext.Users.Select(user => user.ToDto()).ToList();
+            return this.dbContext.Users.Select(user => user.UserToDto()).ToList();
         }
 
         // Ajout d'un ami

@@ -5,7 +5,7 @@ namespace SuperBestFriends.Business.Extensions
 {
     public static class MappingExtensions
     {
-        public static UserDto ToDto(this User user)
+        public static UserDto UserToDto(this User user)
         {
             return new UserDto
             {
