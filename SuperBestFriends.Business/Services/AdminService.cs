@@ -23,7 +23,9 @@ namespace SuperBestFriends.Business.Services
         // Récupération d'un utilisateur à partir de son ID
         public UserAdminDto? GetById(long id)
         {
-            throw new NotImplementedException();
+            var userFound = this.dbContext.Users.FirstOrDefault(user => user.UserId == id);
+
+            return userFound?.UserAdminToDto();
         }
 
         // Création d'un utilisateur

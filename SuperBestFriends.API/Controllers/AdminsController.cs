@@ -16,11 +16,22 @@ namespace SuperBestFriends.API.Controllers
             this.adminService = adminService;
         }
 
-
+        // Récupération de tous les utilisateurs
         [HttpGet]
         public ActionResult<IEnumerable<UserAdminDto>> GetAll()
         {
             return this.Ok(this.adminService.GetAll());
+        }
+
+        // Récupération d'un utilisateur via son ID
+        [HttpGet("{id:long}")]
+        public ActionResult<UserAdminDto> GetById(long id)
+        {
+            var userFound = this.adminService.GetById(id);
+
+            return userFound is null
+                ? NotFound()
+                : Ok(userFound);
         }
     }
 }
