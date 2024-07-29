@@ -32,9 +32,11 @@ namespace SuperBestFriends.Business.Services
         // Création d'un utilisateur
         public async Task<long> CreateAsync(UserAdminDto user)
         {
+            // Vérifie si l'email existe déjà
             if (this.dbContext.Users.Any(u => u.Email == user.Email))
                 return -1;
 
+            // Mise en place des champs utilisateurs
             var userToCreate = new User()
             {
                 FirstName = user.FirstName,
@@ -45,17 +47,41 @@ namespace SuperBestFriends.Business.Services
                 Interests = user.Interests
             };
 
+            // Sauvegarde le nouvel utilisateur
             this.dbContext.Users.Add(userToCreate);
-
             await this.dbContext.SaveChangesAsync();
 
             return userToCreate.UserId;
         }
 
         // Edition d'un utilisateur
-        public Task<long> UpdateAsync(UserAdminDto user)
+        public async Task<long> UpdateAsync(UserAdminDto user)
         {
-            throw new NotImplementedException();
+            // Vérification si l'ID est bien existante
+            var userFound = this.dbContext.Users.FirstOrDefault(u => u.UserId == user.UserId);
+            if (userFound is null)
+                return -1;
+
+            // Vérification si l'email existe déjà chez un autre utilisateur 
+            var existingEmail = this.dbContext.Users.Any(u => u.Email == user.Email && u.UserId != user.UserId);
+            if (existingEmail)
+                return -1;
+
+            // Assigne les nouvelles valeurs à l'utilisateur
+            userFound.FirstName = user.FirstName;
+            userFound.LastName = user.LastName;
+            userFound.Email = user.Email;
+            userFound.BirthDate = user.BirthDate;
+            userFound.PhoneNumber = user.PhoneNumber;
+            userFound.Interests = user.Interests;
+
+            // Sauvegarde l'utilisateur avec ses nouvelles valeurs
+            this.dbContext.Users.Update(userFound);
+            var numberOfOperationsInDatabase = await this.dbContext.SaveChangesAsync();
+
+            return numberOfOperationsInDatabase > 0
+                ? userFound.UserId
+                : -1;
         }
 
         // Suppression d'un utilisateur à partir de son ID

@@ -53,5 +53,28 @@ namespace SuperBestFriends.API.Controllers
                 ? Created($"/api/admins/users/{createdId}", null)
                 : Problem();
         }
+
+        // Edition d'un utilisateur
+        [HttpPut("{id:long}")]
+        public async Task<ActionResult> UpdateAsync(long id, [FromBody] UserAdminInput user)
+        {
+            if (id != user.UserId)
+                return BadRequest("User ID doesn't match.");
+
+            var updatedUserId = await this.adminService.UpdateAsync(new UserAdminDto
+            {
+                UserId = user.UserId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                BirthDate = user.BirthDate,
+                PhoneNumber = user.PhoneNumber,
+                Interests = user.Interests
+            });
+
+            return updatedUserId > 0
+                ? this.NoContent()
+                : Problem("test");
+        }
     }
 }
