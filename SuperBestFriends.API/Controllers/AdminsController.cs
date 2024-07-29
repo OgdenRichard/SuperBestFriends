@@ -74,7 +74,18 @@ namespace SuperBestFriends.API.Controllers
 
             return updatedUserId > 0
                 ? this.NoContent()
-                : Problem("test");
+                : Problem();
+        }
+
+        // Suppression d'un utilisateur
+        [HttpDelete("{id:long}")]
+        public async Task<ActionResult> DeleteAsync(long id)
+        {
+            var isSuccess = await this.adminService.DeleteAsync(id);
+
+            return isSuccess
+                ? NoContent()
+                : Problem();
         }
     }
 }

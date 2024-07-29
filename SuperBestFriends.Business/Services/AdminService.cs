@@ -85,9 +85,18 @@ namespace SuperBestFriends.Business.Services
         }
 
         // Suppression d'un utilisateur à partir de son ID
-        public Task<bool> DeleteAsync(long id)
+        public async Task<bool> DeleteAsync(long id)
         {
-            throw new NotImplementedException();
+            // Recherche si l'ID existe bien
+            var userFound = this.dbContext.Users.Find(id);
+            if (userFound is null)
+                return true;
+
+            // Sauvegarde la suppression de l'utilisateur
+            this.dbContext.Users.Remove(userFound);
+            var numberOfOperationsInDatabase = await this.dbContext.SaveChangesAsync();
+
+            return numberOfOperationsInDatabase > 0;
         }
 
         // Vérification si un utilisateur existe bien à partir de son email (unique)
