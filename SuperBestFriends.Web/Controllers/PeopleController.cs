@@ -16,9 +16,11 @@ namespace SuperBestFriends.Web.Controllers
     {
         private readonly FriendsDbContext _context;
 
+        private readonly User? _connectedUser;
         public PeopleController(FriendsDbContext context)
         {
             _context = context;
+            _connectedUser = context.Users.FirstOrDefault(m => m.UserId == 1);
         }
 
         // GET: Users
@@ -53,7 +55,11 @@ namespace SuperBestFriends.Web.Controllers
         }
 
         public IActionResult AddFriend(string userId) {
-            return RedirectToAction("Index");
+            int friendId = 0;
+            Int32.TryParse(userId, out friendId);
+            User newFriend = _context.Users.FirstOrDefault(u => u.UserId == friendId);
+            var test = _connectedUser.Friends;
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Users/Create
