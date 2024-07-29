@@ -1,5 +1,5 @@
 ﻿@using SuperBestFriends.Web.Models.CurrentUser
-@model IEnumerable<CurrentUserBaseViewModel>
+@model IEnumerable<PeopleViewModel>
 
 @{
     ViewData["Title"] = "People";
@@ -34,6 +34,11 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Age)
+                </td>
+                <td>
+                    <form asp-action="AddFriend">
+                        <button type="submit" class="btn btn-primary" name="UserId" value="@item.UserId">Add</button>
+                    </form>
                 </td>
             </tr>
         }

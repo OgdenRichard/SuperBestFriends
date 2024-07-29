@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SuperBestFriends.Web.Models.CurrentUser
 {
-    public class CurrentUserBaseViewModel
+    public class PeopleViewModel
     {
         public long UserId { get; set; }
 

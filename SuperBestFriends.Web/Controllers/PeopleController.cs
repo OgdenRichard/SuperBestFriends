@@ -12,11 +12,11 @@ using SuperBestFriends.Web.Models.CurrentUser;
 
 namespace SuperBestFriends.Web.Controllers
 {
-    public class CurrentUserController : Controller
+    public class PeopleController : Controller
     {
         private readonly FriendsDbContext _context;
 
-        public CurrentUserController(FriendsDbContext context)
+        public PeopleController(FriendsDbContext context)
         {
             _context = context;
         }
@@ -24,8 +24,9 @@ namespace SuperBestFriends.Web.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            var users = _context.Users.Select(u => new CurrentUserBaseViewModel
+            var users = _context.Users.Select(u => new PeopleViewModel
             {
+                UserId = u.UserId,
                 FirstName = u.FirstName,
                 LastName = u.LastName,
                 BirthDate = u.BirthDate,
@@ -49,6 +50,10 @@ namespace SuperBestFriends.Web.Controllers
             }
 
             return View(user);
+        }
+
+        public IActionResult AddFriend(string userId) {
+            return RedirectToAction("Index");
         }
 
         // GET: Users/Create
