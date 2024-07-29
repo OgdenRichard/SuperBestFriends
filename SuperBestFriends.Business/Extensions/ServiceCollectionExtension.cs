@@ -9,6 +9,7 @@ namespace SuperBestFriends.Business.Extensions
         public static IServiceCollection AddBusiness(this IServiceCollection services)
         {
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IAdminService, AdminService>();
             return services;
         }
     }
