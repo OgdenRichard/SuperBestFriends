@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperBestFriends.DAL", "Sup
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperBestFriends.Business", "SuperBestFriends.Business\SuperBestFriends.Business.csproj", "{800DCDCF-5DB5-4E5D-B95A-9EAE056287DA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Front", "Front", "{8A8EC380-D459-455D-A198-AF1BFAF01D62}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{991226C6-9F17-49FC-9B5B-8820D96E7D7B} = {8A8EC380-D459-455D-A198-AF1BFAF01D62}
 		{FBC68268-74A0-42CB-88EA-572CECC2C0B9} = {5F0ACFDE-EED1-4B63-B4B7-B4AE45046FDA}
 		{4F9E4BED-FEB1-478E-99A9-6593ACA8D9E6} = {5F0ACFDE-EED1-4B63-B4B7-B4AE45046FDA}
 		{800DCDCF-5DB5-4E5D-B95A-9EAE056287DA} = {5F0ACFDE-EED1-4B63-B4B7-B4AE45046FDA}
