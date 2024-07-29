@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace SuperBestFriends.Web.Migrations
+namespace SuperBestFriends.DAL.Migrations
 {
     /// <inheritdoc />
     public partial class UsersTable : Migration

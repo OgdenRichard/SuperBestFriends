@@ -5,11 +5,12 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SuperBestFriends.Web.DAL;
+using SuperBestFriends.DAL;
+
 
 #nullable disable
 
-namespace SuperBestFriends.Web.Migrations
+namespace SuperBestFriends.DAL.Migrations
 {
     [DbContext(typeof(FriendsDbContext))]
     [Migration("20240729091406_UsersTable")]

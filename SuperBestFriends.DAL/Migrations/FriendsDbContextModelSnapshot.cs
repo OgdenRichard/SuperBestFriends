@@ -4,11 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SuperBestFriends.Web.DAL;
+using SuperBestFriends.DAL;
+
 
 #nullable disable
 
-namespace SuperBestFriends.Web.Migrations
+namespace SuperBestFriends.DAL.Migrations
 {
     [DbContext(typeof(FriendsDbContext))]
     partial class FriendsDbContextModelSnapshot : ModelSnapshot

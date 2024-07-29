@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /SuperBestFriends.Web/appsettings.Development.json
+/SuperBestFriends.API/appsettings.Development.json

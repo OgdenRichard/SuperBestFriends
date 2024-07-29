@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace SuperBestFriends.Web.DAL.Entities
+namespace SuperBestFriends.DAL.Entities
 {
     public sealed class User
     {

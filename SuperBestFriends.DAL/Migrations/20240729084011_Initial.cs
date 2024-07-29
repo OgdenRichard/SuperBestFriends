@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace SuperBestFriends.Web.Migrations
+namespace SuperBestFriends.DAL.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration

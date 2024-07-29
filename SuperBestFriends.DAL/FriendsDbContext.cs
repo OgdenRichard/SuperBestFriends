@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SuperBestFriends.Web.DAL.Entities;
+using SuperBestFriends.DAL.Entities;
 
-namespace SuperBestFriends.Web.DAL
+namespace SuperBestFriends.DAL
 {
     public sealed class FriendsDbContext : DbContext
     {
