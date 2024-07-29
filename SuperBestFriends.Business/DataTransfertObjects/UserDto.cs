@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SuperBestFriends.Business.DataTransfertObjects
+﻿namespace SuperBestFriends.Business.DataTransfertObjects
 {
     public sealed class UserDto
     {
