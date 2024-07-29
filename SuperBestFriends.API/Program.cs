@@ -1,3 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using SuperBestFriends.DAL;
+using SuperBestFriends.Business.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,13 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Import DBContext
+builder.Services.AddDbContext<FriendsDbContext>(
+    options => options.UseSqlServer(builder.Configuration.GetConnectionString("FriendsDbContext")));
+
+// Import des services
+builder.Services.AddBusiness();
 
 var app = builder.Build();
 
