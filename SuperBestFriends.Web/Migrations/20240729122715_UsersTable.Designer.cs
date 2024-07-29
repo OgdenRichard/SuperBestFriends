@@ -12,7 +12,7 @@ using SuperBestFriends.Web.DAL;
 namespace SuperBestFriends.Web.Migrations
 {
     [DbContext(typeof(FriendsDbContext))]
-    [Migration("20240729091406_UsersTable")]
+    [Migration("20240729122715_UsersTable")]
     partial class UsersTable
     {
         /// <inheritdoc />
@@ -38,7 +38,7 @@ namespace SuperBestFriends.Web.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -60,6 +60,9 @@ namespace SuperBestFriends.Web.Migrations
                         .HasColumnType("nvarchar(10)");
 
                     b.HasKey("UserId");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
