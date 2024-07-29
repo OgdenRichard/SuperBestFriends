@@ -1,5 +1,6 @@
 ﻿using SuperBestFriends.Business.Abstractions;
 using SuperBestFriends.Business.DataTransfertObjects;
+using SuperBestFriends.Business.Extensions;
 using SuperBestFriends.DAL;
 
 namespace SuperBestFriends.Business.Services
@@ -16,7 +17,7 @@ namespace SuperBestFriends.Business.Services
         // Récupération de tous les utilisateurs
         public List<UserAdminDto> GetAll()
         {
-            throw new NotImplementedException();
+            return this.dbContext.Users.Select(user => user.UserAdminToDto()).ToList();
         }
 
         // Récupération d'un utilisateur à partir de son ID
