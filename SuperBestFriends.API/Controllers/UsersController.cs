@@ -22,5 +22,16 @@ namespace SuperBestFriends.API.Controllers
         {
             return this.Ok(this.userService.GetAll());
         }
+
+        // Ajout d'un ami
+        [HttpPost]
+        public async Task<ActionResult> AddFriendAsync(long userId, long friendId)
+        {
+            var isSuccess = await this.userService.AddFriendAsync(userId, friendId);
+            if (!isSuccess)
+                return BadRequest("Unable to add your new friend.");
+
+            return Ok("You've got a new friend !");
+        }
     }
 }

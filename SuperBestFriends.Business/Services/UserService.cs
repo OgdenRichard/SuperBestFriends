@@ -1,4 +1,5 @@
-﻿using SuperBestFriends.Business.Abstractions;
+﻿using Microsoft.EntityFrameworkCore;
+using SuperBestFriends.Business.Abstractions;
 using SuperBestFriends.Business.DataTransfertObjects;
 using SuperBestFriends.Business.Extensions;
 using SuperBestFriends.DAL;
@@ -21,9 +22,30 @@ namespace SuperBestFriends.Business.Services
         }
 
         // Ajout d'un ami
-        public Task<UserDto> AddFriendAsync(long id)
+        public async Task<bool> AddFriendAsync(long userId, long friendId)
         {
-            throw new NotImplementedException();
+            // Vérifie s'il n'essaie pas de s'ajouter lui même
+            if(userId == friendId)
+                return false;
+
+            // Récupération de l'utilisateur en incluant sa liste d'amis
+            var user = await this.dbContext.Users.Include(user => user.Friends).FirstOrDefaultAsync(user => user.UserId == userId);
+            // Récupération de l'ami sélectionné en fonction de son ID
+            var friend = await this.dbContext.Users.FindAsync(friendId);
+
+            // Vérifie si l'utilisateur et l'ami existent bien
+            if(user is null || friend is null) 
+                return false;
+
+            // Vérifie si la relation existe déjà
+            if(user.Friends.Contains(friend))
+                return false;
+
+            // Ajoute l'ami à la liste
+            user.Friends.Add(friend);
+            var numberOfOperationsInDatabase = await this.dbContext.SaveChangesAsync();
+
+            return numberOfOperationsInDatabase > 0;
         }
     }
 }
