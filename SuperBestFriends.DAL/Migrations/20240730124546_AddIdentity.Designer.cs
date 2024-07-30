@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SuperBestFriends.DAL;
 
@@ -11,9 +12,11 @@ using SuperBestFriends.DAL;
 namespace SuperBestFriends.DAL.Migrations
 {
     [DbContext(typeof(FriendsDbContext))]
-    partial class FriendsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240730124546_AddIdentity")]
+    partial class AddIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -268,7 +271,7 @@ namespace SuperBestFriends.DAL.Migrations
                     b.HasIndex("Email")
                         .IsUnique();
 
-                    b.ToTable("UsersSBF");
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("UserUser", b =>

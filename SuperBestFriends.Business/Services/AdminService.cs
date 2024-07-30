@@ -18,13 +18,13 @@ namespace SuperBestFriends.Business.Services
         // Récupération de tous les utilisateurs
         public List<UserAdminDto> GetAll()
         {
-            return this.dbContext.Users.Select(user => user.UserAdminToDto()).ToList();
+            return this.dbContext.UsersSBF.Select(user => user.UserAdminToDto()).ToList();
         }
 
         // Récupération d'un utilisateur à partir de son ID
         public UserAdminDto? GetById(long id)
         {
-            var userFound = this.dbContext.Users.FirstOrDefault(user => user.UserId == id);
+            var userFound = this.dbContext.UsersSBF.FirstOrDefault(user => user.UserId == id);
 
             return userFound?.UserAdminToDto();
         }
@@ -33,7 +33,7 @@ namespace SuperBestFriends.Business.Services
         public async Task<long> CreateAsync(UserAdminDto user)
         {
             // Vérifie si l'email existe déjà
-            if (this.dbContext.Users.Any(u => u.Email == user.Email))
+            if (this.dbContext.UsersSBF.Any(u => u.Email == user.Email))
                 return -1;
 
             // Mise en place des champs utilisateurs
@@ -49,7 +49,7 @@ namespace SuperBestFriends.Business.Services
             };
 
             // Sauvegarde le nouvel utilisateur
-            this.dbContext.Users.Add(userToCreate);
+            this.dbContext.UsersSBF.Add(userToCreate);
             await this.dbContext.SaveChangesAsync();
 
             return userToCreate.UserId;
@@ -59,12 +59,12 @@ namespace SuperBestFriends.Business.Services
         public async Task<long> UpdateAsync(UserAdminDto user)
         {
             // Vérification si l'ID est bien existante
-            var userFound = this.dbContext.Users.FirstOrDefault(u => u.UserId == user.UserId);
+            var userFound = this.dbContext.UsersSBF.FirstOrDefault(u => u.UserId == user.UserId);
             if (userFound is null)
                 return -1;
 
             // Vérification si l'email existe déjà chez un autre utilisateur 
-            var existingEmail = this.dbContext.Users.Any(u => u.Email == user.Email && u.UserId != user.UserId);
+            var existingEmail = this.dbContext.UsersSBF.Any(u => u.Email == user.Email && u.UserId != user.UserId);
             if (existingEmail)
                 return -1;
 
@@ -78,7 +78,7 @@ namespace SuperBestFriends.Business.Services
             userFound.Interests = user.Interests;
 
             // Sauvegarde l'utilisateur avec ses nouvelles valeurs
-            this.dbContext.Users.Update(userFound);
+            this.dbContext.UsersSBF.Update(userFound);
             var numberOfOperationsInDatabase = await this.dbContext.SaveChangesAsync();
 
             return numberOfOperationsInDatabase > 0
@@ -90,12 +90,12 @@ namespace SuperBestFriends.Business.Services
         public async Task<bool> DeleteAsync(long id)
         {
             // Recherche si l'ID existe bien
-            var userFound = this.dbContext.Users.Find(id);
+            var userFound = this.dbContext.UsersSBF.Find(id);
             if (userFound is null)
                 return true;
 
             // Sauvegarde la suppression de l'utilisateur
-            this.dbContext.Users.Remove(userFound);
+            this.dbContext.UsersSBF.Remove(userFound);
             var numberOfOperationsInDatabase = await this.dbContext.SaveChangesAsync();
 
             return numberOfOperationsInDatabase > 0;

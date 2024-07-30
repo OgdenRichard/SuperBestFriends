@@ -18,13 +18,13 @@ namespace SuperBestFriends.Business.Services
         // Récupération de tous les utilisateurs
         public List<UserDto> GetAll()
         {
-            return this.dbContext.Users.Select(user => user.UserToDto()).ToList();
+            return this.dbContext.UsersSBF.Select(user => user.UserToDto()).ToList();
         }
 
         // Récupération d'un utilisateur à partir de son ID
         public UserProfileDto? GetById(long id)
         {
-            var userFound = this.dbContext.Users.Include(user => user.Friends).FirstOrDefault(user => user.UserId == id);
+            var userFound = this.dbContext.UsersSBF.Include(user => user.Friends).FirstOrDefault(user => user.UserId == id);
 
             return userFound?.UserProfileToDto();
         }
@@ -33,12 +33,12 @@ namespace SuperBestFriends.Business.Services
         public async Task<long> UpdateAsync(long userId, UserUpdateDto user)
         {
             // Vérification si l'ID est bien existante
-            var userFound = this.dbContext.Users.FirstOrDefault(u => u.UserId == userId);
+            var userFound = this.dbContext.UsersSBF.FirstOrDefault(u => u.UserId == userId);
             if (userFound is null)
                 return -1;
 
             // Vérification si l'email existe déjà chez un autre utilisateur 
-            var existingEmail = this.dbContext.Users.Any(u => u.Email == user.Email && u.UserId != userId);
+            var existingEmail = this.dbContext.UsersSBF.Any(u => u.Email == user.Email && u.UserId != userId);
             if (existingEmail)
                 return -1;
 
@@ -52,7 +52,7 @@ namespace SuperBestFriends.Business.Services
             userFound.Interests = user.Interests;
 
             // Sauvegarde l'utilisateur avec ses nouvelles valeurs
-            this.dbContext.Users.Update(userFound);
+            this.dbContext.UsersSBF.Update(userFound);
             var numberOfOperationsInDatabase = await this.dbContext.SaveChangesAsync();
 
             return numberOfOperationsInDatabase > 0
@@ -68,9 +68,9 @@ namespace SuperBestFriends.Business.Services
                 return false;
 
             // Récupération de l'utilisateur en incluant sa liste d'amis
-            var user = await this.dbContext.Users.Include(user => user.Friends).FirstOrDefaultAsync(user => user.UserId == userId);
+            var user = await this.dbContext.UsersSBF.Include(user => user.Friends).FirstOrDefaultAsync(user => user.UserId == userId);
             // Récupération de l'ami sélectionné en fonction de son ID
-            var friend = await this.dbContext.Users.FindAsync(friendId);
+            var friend = await this.dbContext.UsersSBF.FindAsync(friendId);
 
             // Vérifie si l'utilisateur et l'ami existent bien
             if(user is null || friend is null) 
@@ -95,9 +95,9 @@ namespace SuperBestFriends.Business.Services
                 return false;
 
             // Récupération de l'utilisateur en incluant sa liste d'amis
-            var user = await this.dbContext.Users.Include(user => user.Friends).FirstOrDefaultAsync(user => user.UserId == userId);
+            var user = await this.dbContext.UsersSBF.Include(user => user.Friends).FirstOrDefaultAsync(user => user.UserId == userId);
             // Récupération de l'ami sélectionné en fonction de son ID
-            var friend = await this.dbContext.Users.Include(user => user.FriendsOf).FirstOrDefaultAsync(user => user.UserId == friendId);
+            var friend = await this.dbContext.UsersSBF.Include(user => user.FriendsOf).FirstOrDefaultAsync(user => user.UserId == friendId);
 
             // Vérifie si l'utilisateur et l'ami existent bien
             if (user is null || friend is null)
