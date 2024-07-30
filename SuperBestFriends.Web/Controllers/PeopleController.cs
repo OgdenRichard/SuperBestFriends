@@ -69,6 +69,18 @@ namespace SuperBestFriends.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async Task<IActionResult> RemoveFriend(string userId)
+        {
+            long friendId = Convert.ToInt64(userId);
+            if (friendId != 0 && UserExists(friendId))
+            {
+                User newFriend = _context.Users.FirstOrDefault(u => u.UserId == friendId);
+                _connectedUser.Friends.Remove(newFriend);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
         // GET: Users/Create
         public IActionResult Create()
         {
