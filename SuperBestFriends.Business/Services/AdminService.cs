@@ -44,6 +44,7 @@ namespace SuperBestFriends.Business.Services
                 Email = user.Email,
                 BirthDate = user.BirthDate,
                 PhoneNumber = user.PhoneNumber,
+                Address = user.Address,
                 Interests = user.Interests
             };
 
@@ -73,6 +74,7 @@ namespace SuperBestFriends.Business.Services
             userFound.Email = user.Email;
             userFound.BirthDate = user.BirthDate;
             userFound.PhoneNumber = user.PhoneNumber;
+            userFound.Address = user.Address;
             userFound.Interests = user.Interests;
 
             // Sauvegarde l'utilisateur avec ses nouvelles valeurs

@@ -15,6 +15,7 @@ namespace SuperBestFriends.API.Models
         [Required]
         public DateTime BirthDate { get; set; }
         public string PhoneNumber { get; set; } = string.Empty;
+        public string Address { get; set; } = string.Empty;
         public string Interests { get; set; } = string.Empty;
     }
 }

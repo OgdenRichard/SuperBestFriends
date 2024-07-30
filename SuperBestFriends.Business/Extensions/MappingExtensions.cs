@@ -25,6 +25,7 @@ namespace SuperBestFriends.Business.Extensions
                 Email = userAdmin.Email,
                 BirthDate = userAdmin.BirthDate,
                 PhoneNumber = userAdmin.PhoneNumber,
+                Address = userAdmin.Address,
                 Interests = userAdmin.Interests
             };
         }

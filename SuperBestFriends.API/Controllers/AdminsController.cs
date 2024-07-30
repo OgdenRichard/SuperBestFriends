@@ -46,6 +46,7 @@ namespace SuperBestFriends.API.Controllers
                 Email = user.Email,
                 BirthDate = user.BirthDate,
                 PhoneNumber = user.PhoneNumber,
+                Address = user.Address,
                 Interests = user.Interests
             });
 
@@ -69,6 +70,7 @@ namespace SuperBestFriends.API.Controllers
                 Email = user.Email,
                 BirthDate = user.BirthDate,
                 PhoneNumber = user.PhoneNumber,
+                Address = user.Address,
                 Interests = user.Interests
             });
 
