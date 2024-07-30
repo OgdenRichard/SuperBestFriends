@@ -13,7 +13,5 @@ namespace SuperBestFriends.Business.Abstractions
         Task<long> UpdateAsync(UserAdminDto user);
 
         Task<bool> DeleteAsync(long id);
-
-        Task<bool> UserExistsAsync(string email);
     }
 }

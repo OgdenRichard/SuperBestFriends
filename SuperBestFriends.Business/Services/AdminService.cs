@@ -98,11 +98,5 @@ namespace SuperBestFriends.Business.Services
 
             return numberOfOperationsInDatabase > 0;
         }
-
-        // Vérification si un utilisateur existe bien à partir de son email (unique)
-        public Task<bool> UserExistsAsync(string email)
-        {
-            throw new NotImplementedException();
-        }
     }
 }
