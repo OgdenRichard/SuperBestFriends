@@ -10,6 +10,7 @@ namespace SuperBestFriends.Business.Extensions
         {
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAdminService, AdminService>();
+            services.AddTransient<IFileService, FileService>();
             return services;
         }
     }

@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.21.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SuperBestFriends.DAL\SuperBestFriends.DAL.csproj" />
   </ItemGroup>
 
