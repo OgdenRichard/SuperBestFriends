@@ -1,9 +1,9 @@
 ﻿using SuperBestFriends.Web.Models.User;
 using System.ComponentModel.DataAnnotations;
 
-namespace SuperBestFriends.Web.Models.CurrentUser
+namespace SuperBestFriends.Web.Models.Profile
 {
-    public class PeopleViewModel
+    public class ProfileViewModel
     {
         public long UserId { get; set; }
 
