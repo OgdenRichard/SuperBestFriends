@@ -21,6 +21,14 @@ namespace SuperBestFriends.Business.Services
             return this.dbContext.Users.Select(user => user.UserToDto()).ToList();
         }
 
+        // Récupération d'un utilisateur à partir de son ID
+        public UserAdminDto? GetById(long id)
+        {
+            var userFound = this.dbContext.Users.Include(user => user.Friends).FirstOrDefault(user => user.UserId == id);
+
+            return userFound?.UserAdminToDto();
+        }
+
         // Ajout d'un ami
         public async Task<bool> AddFriendAsync(long userId, long friendId)
         {

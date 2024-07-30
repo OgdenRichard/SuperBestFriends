@@ -23,6 +23,17 @@ namespace SuperBestFriends.API.Controllers
             return this.Ok(this.userService.GetAll());
         }
 
+        // Récupération d'un utilisateur via son ID
+        [HttpGet("{id:long}")]
+        public ActionResult<UserAdminDto> GetById(long id)
+        {
+            var userFound = this.userService.GetById(id);
+
+            return userFound is null
+                ? NotFound()
+                : Ok(userFound);
+        }
+
         // Ajout d'un ami
         [HttpPost]
         public async Task<ActionResult> AddFriendAsync(long userId, long friendId)
