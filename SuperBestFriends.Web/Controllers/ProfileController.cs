@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SuperBestFriends.Web.DAL;
 using SuperBestFriends.Web.DAL.Entities;
 using SuperBestFriends.Web.Models.Profile;
+using SuperBestFriends.Web.Models.User;
 
 namespace SuperBestFriends.Web.Controllers
 {
@@ -30,7 +31,22 @@ namespace SuperBestFriends.Web.Controllers
                 BirthDate = u.BirthDate,
                 IsFriend = friendIds.Contains(u.UserId)
             });
-            return View(await users.ToListAsync());
+
+            var usersList = await users.ToListAsync();
+
+            var profileUser = new ProfileViewModel
+            {
+                UserId = _connectedUser.UserId,
+                FirstName = _connectedUser.FirstName,
+                LastName = _connectedUser.LastName,
+                BirthDate = _connectedUser.BirthDate,
+                Email = _connectedUser.Email,
+                PhoneNumber = _connectedUser.PhoneNumber,
+                Interests = _connectedUser.Interests,
+                People = usersList
+            };
+
+            return View(profileUser);
         }
 
         // GET: Users/Details/5
@@ -76,7 +92,7 @@ namespace SuperBestFriends.Web.Controllers
         }
 
         // GET: Users/Edit/5
-        public async Task<IActionResult> Edit(long? id)
+        /*public async Task<IActionResult> Edit(long? id)
         {
             if (id == null)
             {
@@ -89,30 +105,35 @@ namespace SuperBestFriends.Web.Controllers
                 return NotFound();
             }
             return View(user);
-        }
+        }*/
 
         // POST: Users/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("UserId,FirstName,LastName,BirthDate,Email,PhoneNumber,Interests")] User user)
+        public async Task<IActionResult> Edit([Bind("UserId,FirstName,LastName,BirthDate,Email,PhoneNumber,Interests")] ProfileViewModel user)
         {
-            if (id != user.UserId)
-            {
-                return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
+
+                _connectedUser.FirstName = user.FirstName;
+                _connectedUser.LastName = user.LastName;
+                _connectedUser.BirthDate = user.BirthDate;
+                _connectedUser.Email = user.Email;
+                _connectedUser.PhoneNumber = user.PhoneNumber;
+                _connectedUser.Interests = user.Interests;
+
                 try
                 {
-                    _context.Update(user);
+                    _context.Update(_connectedUser);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UserExists(user.UserId))
+                    if (!UserExists(_connectedUser.UserId))
                     {
                         return NotFound();
                     }
@@ -121,9 +142,9 @@ namespace SuperBestFriends.Web.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            return RedirectToAction(nameof(Index));
+            // return View(user);
         }
 
 

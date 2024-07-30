@@ -15,6 +15,23 @@ namespace SuperBestFriends.Web.Models.User
         [Display(Name = "Date de naissance")]
         public DateTime BirthDate { get; set; }
 
+        [Display(Name = "Age")]
+        public int Age
+        {
+            get
+            {
+                var today = DateTime.Today;
+                var age = today.Year - BirthDate.Year;
+
+                if (BirthDate.Date > today.AddYears(-age))
+                {
+                    age--;
+                }
+
+                return age;
+            }
+        }
+
         [Display(Name = "Email")]
         public string Email { get; set; } = string.Empty;
 

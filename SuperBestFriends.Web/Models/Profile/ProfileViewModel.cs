@@ -44,10 +44,10 @@ namespace SuperBestFriends.Web.Models.Profile
         [Display(Name = "Centres d'intérêt")]
         public string Interests { get; set; } = string.Empty;
 
-        [Display(Name = "Liste des amis")]
-        public List<UserInputViewModel> Friends { get; set; } = [];
-
         [Display(Name = "Photo de profil")]
         public IFormFile? Image { get; set; }
+
+        [Display(Name = "Liste d'utilisateurs'")]
+        public List<ProfileViewModel> People { get; set; } = [];
     }
 }
