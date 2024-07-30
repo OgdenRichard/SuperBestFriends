@@ -54,11 +54,15 @@ namespace SuperBestFriends.Web.Controllers
             return View(user);
         }
 
-        public IActionResult AddFriend(string userId) {
-            int friendId = 0;
-            Int32.TryParse(userId, out friendId);
-            User newFriend = _context.Users.FirstOrDefault(u => u.UserId == friendId);
-            var test = _connectedUser.Friends;
+        public async Task<IActionResult> AddFriend(string userId)
+        {
+            long friendId = Convert.ToInt64(userId);
+            if (friendId != 0 && UserExists(friendId))
+            {
+                User newFriend = _context.Users.FirstOrDefault(u => u.UserId == friendId);
+                _connectedUser.Friends.Add(newFriend);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
 
@@ -172,5 +176,7 @@ namespace SuperBestFriends.Web.Controllers
         {
             return _context.Users.Any(e => e.UserId == id);
         }
+
+
     }
 }
