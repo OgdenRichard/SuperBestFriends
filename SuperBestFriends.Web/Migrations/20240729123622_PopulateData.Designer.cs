@@ -25,7 +25,7 @@ namespace SuperBestFriends.Web.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("SuperBestFriends.Web.DAL.Entities.User", b =>
+            modelBuilder.Entity("SuperBestFriends.Web.DAL.Entities.Users", b =>
                 {
                     b.Property<long>("UserId")
                         .ValueGeneratedOnAdd()
@@ -196,13 +196,13 @@ namespace SuperBestFriends.Web.Migrations
 
             modelBuilder.Entity("UserUser", b =>
                 {
-                    b.HasOne("SuperBestFriends.Web.DAL.Entities.User", null)
+                    b.HasOne("SuperBestFriends.Web.DAL.Entities.Users", null)
                         .WithMany()
                         .HasForeignKey("FriendsOfUserId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
 
-                    b.HasOne("SuperBestFriends.Web.DAL.Entities.User", null)
+                    b.HasOne("SuperBestFriends.Web.DAL.Entities.Users", null)
                         .WithMany()
                         .HasForeignKey("FriendsUserId")
                         .OnDelete(DeleteBehavior.Cascade)

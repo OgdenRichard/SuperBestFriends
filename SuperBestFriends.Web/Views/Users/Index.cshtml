@@ -1,4 +1,5 @@
-﻿@model IEnumerable<SuperBestFriends.Web.DAL.Entities.User>
+﻿@using SuperBestFriends.Web.Models.Users
+@model IEnumerable<UserBaseViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -24,12 +25,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Email)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Interests)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -47,12 +42,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Interests)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.UserId">Edit</a> |
