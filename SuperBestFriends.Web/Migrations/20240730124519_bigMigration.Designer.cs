@@ -12,8 +12,8 @@ using SuperBestFriends.Web.DAL;
 namespace SuperBestFriends.Web.Migrations
 {
     [DbContext(typeof(FriendsDbContext))]
-    [Migration("20240730084543_InitialTabAddress")]
-    partial class InitialTabAddress
+    [Migration("20240730124519_bigMigration")]
+    partial class bigMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

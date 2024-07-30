@@ -25,7 +25,7 @@ namespace SuperBestFriends.Web.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            var usersVm= await _context.Users.Select(u => UserBaseViewModel.FromModel(u))
+            var usersVm = await _context.Users.Select(u => UserBaseViewModel.FromModel(u))
                                              .ToListAsync();
 
             return View(usersVm);
@@ -52,7 +52,7 @@ namespace SuperBestFriends.Web.Controllers
         // GET: Users/Create
         public IActionResult Create()
         {
-            UserInputViewModel userInputViewModel = new ();
+            UserInputViewModel userInputViewModel = new();
             //PopulateList(ref userInputViewModel);
             return View(userInputViewModel);
         }
@@ -75,9 +75,9 @@ namespace SuperBestFriends.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserId,FirstName,LastName,BirthDate,Email,PhoneNumber,Address,Interests,Image")] UserInputViewModel vm)
         {
-            if(CheckEmail(vm.Email))
+            if (CheckEmail(vm.Email))
             {
-                ModelState.AddModelError(nameof(UserInputViewModel.Email), "L'utilisateur déja existant ! "); 
+                ModelState.AddModelError(nameof(UserInputViewModel.Email), "L'utilisateur déja existant ! ");
             }
 
             if (ModelState.IsValid)
@@ -88,9 +88,9 @@ namespace SuperBestFriends.Web.Controllers
                     LastName = vm.LastName,
                     BirthDate = vm.BirthDate,
                     Email = vm.Email,
-                    PhoneNumber=vm.PhoneNumber,
+                    PhoneNumber = vm.PhoneNumber,
                     Address = vm.Address,
-                    Interests = vm.Interests   
+                    Interests = vm.Interests
                 };
                 _context.Add(user);
                 await _context.SaveChangesAsync();
@@ -109,13 +109,13 @@ namespace SuperBestFriends.Web.Controllers
 
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(long? id)
-        {  
-            if(id == null || _context.Users==null)
+        {
+            if (id == null || _context.Users == null)
             {
                 return NotFound();
             }
 
-            var matchingUser= await _context.Users.FirstOrDefaultAsync(u=>u.UserId == id);
+            var matchingUser = await _context.Users.FirstOrDefaultAsync(u => u.UserId == id);
             if (matchingUser == null)
             {
                 return NotFound();
@@ -123,6 +123,7 @@ namespace SuperBestFriends.Web.Controllers
 
             var userInputVm = new UserInputViewModel()
             {
+                UserId = matchingUser.UserId,
                 FirstName = matchingUser.FirstName,
                 LastName = matchingUser.LastName,
                 Email = matchingUser.Email,
@@ -130,9 +131,9 @@ namespace SuperBestFriends.Web.Controllers
                 PhoneNumber = matchingUser.PhoneNumber,
                 Address = matchingUser.Address,
                 Interests = matchingUser.Interests
-               
+
             };
-            
+
             return View(userInputVm);
         }
 
@@ -141,9 +142,11 @@ namespace SuperBestFriends.Web.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("UserId,FirstName,LastName,BirthDate,Email,PhoneNumber,Address,Interests")] UserInputViewModel vm)
+        public async Task<IActionResult> Edit(long id, [Bind("FirstName,LastName,BirthDate,Email,PhoneNumber,Address,Interests")] UserInputViewModel vm)
         {
-            if (id != vm.UserId)
+            var matchingUser = await this._context.Users.FirstOrDefaultAsync(x => x.UserId == id);
+
+            if (matchingUser is null)
             {
                 return NotFound();
             }
@@ -156,25 +159,24 @@ namespace SuperBestFriends.Web.Controllers
             if (ModelState.IsValid)
             {
 
-                var matchingUser = await _context.Users.FirstOrDefaultAsync();
-                 if(matchingUser is null) 
-                     return NotFound();
+                if (matchingUser is null)
+                    return NotFound();
 
-                matchingUser.FirstName=vm.FirstName;
+                matchingUser.FirstName = vm.FirstName;
                 matchingUser.LastName = vm.LastName;
                 matchingUser.Email = vm.Email;
                 matchingUser.BirthDate = vm.BirthDate;
                 matchingUser.PhoneNumber = vm.PhoneNumber;
                 matchingUser.Address = vm.Address;
                 matchingUser.Interests = vm.Interests;
-                
-             
-                    _context.Update(matchingUser);
-                    await _context.SaveChangesAsync();
-    
+
+
+                _context.Update(matchingUser);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
-            
+
             return View(vm);
         }
 
