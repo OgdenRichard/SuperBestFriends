@@ -22,11 +22,42 @@ namespace SuperBestFriends.Business.Services
         }
 
         // Récupération d'un utilisateur à partir de son ID
-        public UserAdminDto? GetById(long id)
+        public UserProfileDto? GetById(long id)
         {
             var userFound = this.dbContext.Users.Include(user => user.Friends).FirstOrDefault(user => user.UserId == id);
 
-            return userFound?.UserAdminToDto();
+            return userFound?.UserProfileToDto();
+        }
+
+        // Edition d'un utilisateur
+        public async Task<long> UpdateAsync(long userId, UserUpdateDto user)
+        {
+            // Vérification si l'ID est bien existante
+            var userFound = this.dbContext.Users.FirstOrDefault(u => u.UserId == userId);
+            if (userFound is null)
+                return -1;
+
+            // Vérification si l'email existe déjà chez un autre utilisateur 
+            var existingEmail = this.dbContext.Users.Any(u => u.Email == user.Email && u.UserId != userId);
+            if (existingEmail)
+                return -1;
+
+            // Assigne les nouvelles valeurs à l'utilisateur
+            userFound.FirstName = user.FirstName;
+            userFound.LastName = user.LastName;
+            userFound.Email = user.Email;
+            userFound.BirthDate = user.BirthDate;
+            userFound.PhoneNumber = user.PhoneNumber;
+            userFound.Address = user.Address;
+            userFound.Interests = user.Interests;
+
+            // Sauvegarde l'utilisateur avec ses nouvelles valeurs
+            this.dbContext.Users.Update(userFound);
+            var numberOfOperationsInDatabase = await this.dbContext.SaveChangesAsync();
+
+            return numberOfOperationsInDatabase > 0
+                ? userFound.UserId
+                : -1;
         }
 
         // Ajout d'un ami

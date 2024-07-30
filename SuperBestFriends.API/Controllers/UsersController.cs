@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SuperBestFriends.API.Models;
 using SuperBestFriends.Business.Abstractions;
 using SuperBestFriends.Business.DataTransfertObjects;
 
@@ -25,13 +26,38 @@ namespace SuperBestFriends.API.Controllers
 
         // Récupération d'un utilisateur via son ID
         [HttpGet("{id:long}")]
-        public ActionResult<UserAdminDto> GetById(long id)
+        public ActionResult<UserProfileDto> GetById(long id)
         {
             var userFound = this.userService.GetById(id);
 
             return userFound is null
                 ? NotFound()
                 : Ok(userFound);
+        }
+
+        // Edition d'un utilisateur
+        [HttpPut("{id:long}")]
+        public async Task<ActionResult> UpdateAsync(long id, [FromBody] UserUpdateDto user)
+        {
+            // Récupération de l'utilisateur connecté
+            var connectedUserId = 1;
+            if (connectedUserId != id)
+                return Forbid("You're not allowed here.");
+
+            var updatedUserId = await this.userService.UpdateAsync(id, new UserUpdateDto
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                BirthDate = user.BirthDate,
+                PhoneNumber = user.PhoneNumber,
+                Address = user.Address,
+                Interests = user.Interests
+            });
+
+            return updatedUserId > 0
+                ? this.NoContent()
+                : this.Problem();
         }
 
         // Ajout d'un ami

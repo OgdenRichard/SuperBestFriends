@@ -29,5 +29,26 @@ namespace SuperBestFriends.Business.Extensions
                 Interests = userAdmin.Interests
             };
         }
+
+        public static UserProfileDto UserProfileToDto(this User userProfile)
+        {
+            return new UserProfileDto
+            {
+                UserId = userProfile.UserId,
+                FirstName = userProfile.FirstName,
+                LastName = userProfile.LastName,
+                Email = userProfile.Email,
+                BirthDate = userProfile.BirthDate,
+                PhoneNumber = userProfile.PhoneNumber,
+                Address = userProfile.Address,
+                Interests = userProfile.Interests,
+                Friends = userProfile.Friends.Select(friend => new UserDto
+                {
+                    UserId = friend.UserId,
+                    FirstName = friend.FirstName,
+                    LastName = friend.LastName,
+                }).ToList()
+            };
+        }
     }
 }
