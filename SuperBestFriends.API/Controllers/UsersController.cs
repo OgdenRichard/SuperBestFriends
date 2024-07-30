@@ -33,5 +33,15 @@ namespace SuperBestFriends.API.Controllers
 
             return Ok("You've got a new friend !");
         }
+
+        [HttpDelete]
+        public async Task<ActionResult> RemoveFriendAsync(long userId, long friendId)
+        {
+            var isSuccess = await this.userService.RemoveFriendAsync(userId, friendId);
+            if (!isSuccess)
+                return BadRequest("Unable to remove your friend");
+
+            return Ok("At least say farewell to your old friend");
+        }
     }
 }

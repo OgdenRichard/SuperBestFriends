@@ -47,5 +47,32 @@ namespace SuperBestFriends.Business.Services
 
             return numberOfOperationsInDatabase > 0;
         }
+
+        // Suppression d'un ami
+        public async Task<bool> RemoveFriendAsync(long userId, long friendId)
+        {
+            // Vérifie s'il n'essaie pas de supprimer sa propre amitié
+            if (userId == friendId)
+                return false;
+
+            // Récupération de l'utilisateur en incluant sa liste d'amis
+            var user = await this.dbContext.Users.Include(user => user.Friends).FirstOrDefaultAsync(user => user.UserId == userId);
+            // Récupération de l'ami sélectionné en fonction de son ID
+            var friend = await this.dbContext.Users.Include(user => user.FriendsOf).FirstOrDefaultAsync(user => user.UserId == friendId);
+
+            // Vérifie si l'utilisateur et l'ami existent bien
+            if (user is null || friend is null)
+                return false;
+
+            // Vérifie si la relation existe déjà
+            if (!user.Friends.Contains(friend))
+                return false;
+
+            // Ajoute l'ami à la liste
+            user.Friends.Remove(friend);
+            var numberOfOperationsInDatabase = await this.dbContext.SaveChangesAsync();
+
+            return numberOfOperationsInDatabase > 0;
+        }
     }
 }

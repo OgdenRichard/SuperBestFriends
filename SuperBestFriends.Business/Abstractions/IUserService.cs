@@ -7,5 +7,7 @@ namespace SuperBestFriends.Business.Abstractions
         List<UserDto> GetAll();
 
         Task<bool> AddFriendAsync(long userId, long friendId);
+
+        Task<bool> RemoveFriendAsync(long userId, long friendId);
     }
 }
