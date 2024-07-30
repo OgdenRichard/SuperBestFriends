@@ -90,9 +90,12 @@ namespace SuperBestFriends.Web.Controllers
                     Email = vm.Email,
                     PhoneNumber = vm.PhoneNumber,
                     Address = vm.Address,
-                    Interests = vm.Interests
+                    Interests = vm.Interests,
+                    
+ 
                 };
                 _context.Add(user);
+
                 await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
@@ -151,20 +154,17 @@ namespace SuperBestFriends.Web.Controllers
                 return NotFound();
             }
 
-            if (CheckEmail(vm.Email))
+            if (CheckEmail(vm.Email) && id != matchingUser.UserId)
             {
-                ModelState.AddModelError(nameof(UserInputViewModel.Email), "L'utilisateur déja existant ! ");
+               ModelState.AddModelError(nameof(UserInputViewModel.Email), "L'utilisateur déja existant ! ");
+              
             }
 
             if (ModelState.IsValid)
             {
-
-                if (matchingUser is null)
-                    return NotFound();
-
                 matchingUser.FirstName = vm.FirstName;
                 matchingUser.LastName = vm.LastName;
-                matchingUser.Email = vm.Email;
+                //matchingUser.Email = vm.Email;
                 matchingUser.BirthDate = vm.BirthDate;
                 matchingUser.PhoneNumber = vm.PhoneNumber;
                 matchingUser.Address = vm.Address;
