@@ -1,4 +1,5 @@
-﻿using SuperBestFriends.Web.Models.User;
+﻿using SuperBestFriends.Business.DataTransfertObjects;
+using SuperBestFriends.Web.Models.User;
 using System.ComponentModel.DataAnnotations;
 
 namespace SuperBestFriends.Web.Models.Profile
@@ -49,5 +50,22 @@ namespace SuperBestFriends.Web.Models.Profile
 
         [Display(Name = "Liste d'utilisateurs'")]
         public List<ProfileViewModel> People { get; set; } = [];
+
+        public List<UserDto> Friends { get; set; } = [];
+
+        public static ProfileViewModel FromDto(UserProfileDto user)
+        {
+            return new ProfileViewModel
+            {
+                UserId = user.UserId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                BirthDate = user.BirthDate,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Interests = user.Interests,
+                Friends = user.Friends.ToList()
+            };
+        }
     }
 }

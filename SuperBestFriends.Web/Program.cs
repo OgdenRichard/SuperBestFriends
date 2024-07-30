@@ -10,6 +10,12 @@ builder.Services.AddDbContext<FriendsDbContext>(
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("FriendsDbContext"))
 );
 
+// Import API
+builder.Services.AddHttpClient("SuperBestFriendsAPI", options =>
+{
+    options.BaseAddress = new Uri(builder.Configuration["FriendsApi:BaseUri"]);
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

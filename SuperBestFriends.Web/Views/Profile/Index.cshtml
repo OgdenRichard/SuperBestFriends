@@ -63,14 +63,14 @@
             <th>
                 @Html.DisplayNameFor(model => model.LastName)
             </th>
-            <th>
+            @* <th>
                 @Html.DisplayNameFor(model => model.Age)
-            </th>
+            </th> *@
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.People)
+        @foreach (var item in Model.Friends)
         {
             <tr>
                 <td>
@@ -79,22 +79,22 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.LastName)
                 </td>
-                <td>
+                @* <td>
                     @Html.DisplayFor(modelItem => item.Age)
-                </td>
+                </td> *@
                 <td>
-                    @if (item.IsFriend)
-                    {
+                    @* @if (item.IsFriend)
+                    { *@
                         <form asp-action="RemoveFriend">
                             <button type="submit" class="btn btn-secondary btn-sm" name="UserId" value="@item.UserId">Remove</button>
                         </form>
-                    }
+                    @* }
                     else
                     {
                         <form asp-action="AddFriend">
                             <button type="submit" class="btn btn-primary btn-sm" name="UserId" value="@item.UserId">Add</button>
                         </form>
-                    }
+                    } *@
                 </td>
             </tr>
         }

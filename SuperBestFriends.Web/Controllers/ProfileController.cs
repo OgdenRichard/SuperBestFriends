@@ -1,52 +1,68 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SuperBestFriends.Business.DataTransfertObjects;
 using SuperBestFriends.Web.DAL;
 using SuperBestFriends.Web.DAL.Entities;
 using SuperBestFriends.Web.Models.Profile;
 using SuperBestFriends.Web.Models.User;
+using System.Net;
 
 namespace SuperBestFriends.Web.Controllers
 {
     public class ProfileController : Controller
     {
         private readonly FriendsDbContext _context;
+        private readonly HttpClient httpClient;
 
         private readonly User? _connectedUser;
-        public ProfileController(FriendsDbContext context)
+        //public ProfileController(FriendsDbContext context)
+        //{
+        //    _context = context;
+        //    _connectedUser = context.Users.Include(f => f.Friends).FirstOrDefault(m => m.UserId == 1);
+        //}
+        public ProfileController(IHttpClientFactory httpClientFactory)
         {
-            _context = context;
-            _connectedUser = context.Users.Include(f => f.Friends).FirstOrDefault(m => m.UserId == 1);
+            this.httpClient = httpClientFactory.CreateClient("SuperBestFriendsAPI");
         }
 
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            var friendIds = _connectedUser.Friends.Select(f => f.UserId).ToList();
+            //var friendIds = _connectedUser.Friends.Select(f => f.UserId).ToList();
 
-            var users = _context.Users.Select(u => new ProfileViewModel
-            {
-                UserId = u.UserId,
-                FirstName = u.FirstName,
-                LastName = u.LastName,
-                BirthDate = u.BirthDate,
-                IsFriend = friendIds.Contains(u.UserId)
-            });
+            //var users = _context.Users.Select(u => new ProfileViewModel
+            //{
+            //    UserId = u.UserId,
+            //    FirstName = u.FirstName,
+            //    LastName = u.LastName,
+            //    BirthDate = u.BirthDate,
+            //    IsFriend = friendIds.Contains(u.UserId)
+            //});
 
-            var usersList = await users.ToListAsync();
+            //var usersList = await users.ToListAsync();
 
-            var profileUser = new ProfileViewModel
-            {
-                UserId = _connectedUser.UserId,
-                FirstName = _connectedUser.FirstName,
-                LastName = _connectedUser.LastName,
-                BirthDate = _connectedUser.BirthDate,
-                Email = _connectedUser.Email,
-                PhoneNumber = _connectedUser.PhoneNumber,
-                Interests = _connectedUser.Interests,
-                People = usersList
-            };
+            //var profileUser = new ProfileViewModel
+            //{
+            //    UserId = _connectedUser.UserId,
+            //    FirstName = _connectedUser.FirstName,
+            //    LastName = _connectedUser.LastName,
+            //    BirthDate = _connectedUser.BirthDate,
+            //    Email = _connectedUser.Email,
+            //    PhoneNumber = _connectedUser.PhoneNumber,
+            //    Interests = _connectedUser.Interests,
+            //    People = usersList
+            //};
 
-            return View(profileUser);
+            var httpResponse = await this.httpClient.GetAsync($"api/users/{1}");
+
+            if(!httpResponse.IsSuccessStatusCode)
+                return NotFound();
+
+            var userFromApi = await httpResponse.Content.ReadFromJsonAsync<UserProfileDto>();
+
+            var userVm = ProfileViewModel.FromDto(userFromApi ?? new UserProfileDto());
+
+            return View(userVm);
         }
 
         // GET: Users/Details/5
