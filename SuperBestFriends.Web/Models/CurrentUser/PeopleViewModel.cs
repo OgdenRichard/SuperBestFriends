@@ -33,6 +33,8 @@ namespace SuperBestFriends.Web.Models.CurrentUser
             }
         }
 
+        public bool IsFriend { get; set; }
+
         [Display(Name = "Email")]
         public string Email { get; set; } = string.Empty;
 

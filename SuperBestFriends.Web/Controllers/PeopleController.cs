@@ -20,18 +20,21 @@ namespace SuperBestFriends.Web.Controllers
         public PeopleController(FriendsDbContext context)
         {
             _context = context;
-            _connectedUser = context.Users.FirstOrDefault(m => m.UserId == 1);
+            _connectedUser = context.Users.Include(f => f.Friends).FirstOrDefault(m => m.UserId == 1);
         }
 
         // GET: Users
         public async Task<IActionResult> Index()
         {
+            var friendIds = _connectedUser.Friends.Select(f => f.UserId).ToList();
+
             var users = _context.Users.Select(u => new PeopleViewModel
             {
                 UserId = u.UserId,
                 FirstName = u.FirstName,
                 LastName = u.LastName,
                 BirthDate = u.BirthDate,
+                IsFriend = friendIds.Contains(u.UserId)
             });
             return View(await users.ToListAsync());
         }
