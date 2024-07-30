@@ -26,6 +26,9 @@ namespace SuperBestFriends.DAL.Entities
 
         [StringLength(10)]
         public string PhoneNumber { get; set; } = string.Empty;
+        
+        [StringLength(255)]
+        public string Address { get; set; } = string.Empty;
 
         [Column(TypeName = "ntext")]
         public string Interests { get; set; } = string.Empty;
