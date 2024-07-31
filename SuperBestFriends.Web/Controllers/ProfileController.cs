@@ -7,6 +7,8 @@ using SuperBestFriends.Web.DAL.Entities;
 using SuperBestFriends.Web.Models.Profile;
 using SuperBestFriends.Web.Models.User;
 using System.Net;
+using System.Text;
+using System.Text.Json;
 
 namespace SuperBestFriends.Web.Controllers
 {
@@ -17,6 +19,7 @@ namespace SuperBestFriends.Web.Controllers
 
         private readonly User? _connectedUser;
         public long connectedUserId = 3;
+        public UserProfileDto connectedUser { get; set; }
         //public ProfileController(FriendsDbContext context)
         //{
         //    _context = context;
@@ -122,60 +125,27 @@ namespace SuperBestFriends.Web.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Users/Edit/5
-        /*public async Task<IActionResult> Edit(long? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return View(user);
-        }*/
-
         // POST: Users/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("UserId,FirstName,LastName,BirthDate,Email,PhoneNumber,Interests")] ProfileViewModel user)
+        public async Task<IActionResult> Edit([FromForm] ProfileViewModel user)
         {
-
             if (ModelState.IsValid)
             {
+                var json = JsonSerializer.Serialize(user);
 
-                _connectedUser.FirstName = user.FirstName;
-                _connectedUser.LastName = user.LastName;
-                _connectedUser.BirthDate = user.BirthDate;
-                _connectedUser.Email = user.Email;
-                _connectedUser.PhoneNumber = user.PhoneNumber;
-                _connectedUser.Interests = user.Interests;
+                var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-                try
-                {
-                    _context.Update(_connectedUser);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UserExists(_connectedUser.UserId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                var httpResponse = await this.httpClient.PutAsync($"api/Users/{user.UserId}", httpContent);
+
+                if (httpResponse.IsSuccessStatusCode)
+                    return RedirectToAction(nameof(Index));
             }
+
             return RedirectToAction(nameof(Index));
-            // return View(user);
         }
 
 

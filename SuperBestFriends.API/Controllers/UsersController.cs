@@ -40,9 +40,9 @@ namespace SuperBestFriends.API.Controllers
         public async Task<ActionResult> UpdateAsync(long id, [FromBody] UserUpdateDto user)
         {
             // Récupération de l'utilisateur connecté
-            var connectedUserId = 1;
-            if (connectedUserId != id)
-                return Forbid("You're not allowed here.");
+            //var connectedUserId = 1;
+            //if (connectedUserId != id)
+            //    return Forbid("You're not allowed here.");
 
             var updatedUserId = await this.userService.UpdateAsync(id, new UserUpdateDto
             {
