@@ -1,0 +1,46 @@
+﻿@using SuperBestFriends.Web.Models.Profile
+@model IEnumerable<ProfileViewModel>
+
+@{
+    ViewData["Title"] = "People";
+}
+
+<h4>Ajouter / Retirer des amis</h4>
+<hr />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Age)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Age)
+                </td>
+                <td>
+                    <form asp-action="AddFriend">
+                        <button type="submit" class="btn btn-primary btn-sm" name="UserId" value="@item.UserId">Add</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
