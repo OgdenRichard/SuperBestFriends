@@ -67,5 +67,15 @@ namespace SuperBestFriends.Web.Models.Profile
                 Friends = user.Friends.ToList()
             };
         }
+
+        public static ProfileViewModel FriendFromDto(UserDto user)
+        {
+            return new ProfileViewModel
+            {
+                UserId = user.UserId,
+                FirstName = user.FirstName,
+                LastName = user.LastName
+            };
+        }
     }
 }
