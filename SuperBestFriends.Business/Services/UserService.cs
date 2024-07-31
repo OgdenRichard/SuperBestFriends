@@ -29,6 +29,21 @@ namespace SuperBestFriends.Business.Services
             return userFound?.UserProfileToDto();
         }
 
+        // Récupération de la liste des non amis
+        public List<UserDto> GetNonFriends(long id)
+        {
+            var userFound = this.dbContext.UsersSBF.Include(user => user.Friends).FirstOrDefault(user => user.UserId == id);
+
+            if(userFound is null)
+                return new List<UserDto>();
+
+            var userFriendsIds = userFound.Friends.Select(friend => friend.UserId).ToList();
+
+            var userNonFriends = this.dbContext.UsersSBF.Where(user =>  user.UserId != id && !userFriendsIds.Contains(user.UserId)).Select(user => user.UserToDto()).ToList();
+
+            return userNonFriends;
+        }
+
         // Edition d'un utilisateur
         public async Task<long> UpdateAsync(long userId, UserUpdateDto user)
         {

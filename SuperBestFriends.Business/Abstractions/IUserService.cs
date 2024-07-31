@@ -8,6 +8,8 @@ namespace SuperBestFriends.Business.Abstractions
 
         UserProfileDto? GetById(long id);
 
+        List<UserDto> GetNonFriends(long id);
+
         Task<long> UpdateAsync(long userId, UserUpdateDto user);
 
         Task<bool> AddFriendAsync(long userId, long friendId);
