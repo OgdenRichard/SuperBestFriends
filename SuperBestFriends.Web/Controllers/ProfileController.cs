@@ -65,6 +65,23 @@ namespace SuperBestFriends.Web.Controllers
             return View(userVm);
         }
 
+
+        public async Task<IActionResult> People()
+        {
+            var nonfriends = _context.Users
+                .Where(u => u.UserId != _connectedUser.UserId)
+                .Where(u => !u.FriendsOf.Any(f => f.UserId == _connectedUser.UserId))
+                .Select(u => new ProfileViewModel
+                {
+                    UserId = u.UserId,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    BirthDate = u.BirthDate,
+                });
+            var vm = await nonfriends.ToListAsync();
+            return View(vm);
+        }
+
         // GET: Users/Details/5
         public async Task<IActionResult> Details(long? id)
         {
