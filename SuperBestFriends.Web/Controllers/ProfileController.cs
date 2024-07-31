@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using SuperBestFriends.Web.DAL;
 using SuperBestFriends.Web.DAL.Entities;
 using SuperBestFriends.Web.Models.Profile;
@@ -127,8 +128,9 @@ namespace SuperBestFriends.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit([Bind("UserId,FirstName,LastName,BirthDate,Email,PhoneNumber,Interests")] ProfileViewModel user)
         {
+            var nbmails = _context.Users.Count(u => u.Email.ToLower() == user.Email.ToLower() && u.UserId != user.UserId);
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && nbmails==0)
             {
 
                 _connectedUser.FirstName = user.FirstName;
