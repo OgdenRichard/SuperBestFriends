@@ -21,22 +21,14 @@ namespace SuperBestFriends.Web.Controllers
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            var friendIds = _connectedUser.Friends.Select(f => f.UserId).ToList();
 
-            var nonfriends = await _context.Users
-                .Where(u => u.UserId != _connectedUser.UserId)
-                .Where(u => !u.FriendsOf.Any(f => f.UserId == _connectedUser.UserId)).ToListAsync();
-
-            var users = _context.Users.Select(u => new ProfileViewModel
+            var users = _connectedUser.Friends.Select(u => new ProfileViewModel
             {
                 UserId = u.UserId,
                 FirstName = u.FirstName,
                 LastName = u.LastName,
                 BirthDate = u.BirthDate,
-                IsFriend = friendIds.Contains(u.UserId)
-            });
-
-            var usersList = await users.ToListAsync();
+            }).ToList();
 
             var profileUser = new ProfileViewModel
             {
@@ -47,7 +39,7 @@ namespace SuperBestFriends.Web.Controllers
                 Email = _connectedUser.Email,
                 PhoneNumber = _connectedUser.PhoneNumber,
                 Interests = _connectedUser.Interests,
-                People = usersList
+                People = users
             };
 
             return View(profileUser);
@@ -58,7 +50,7 @@ namespace SuperBestFriends.Web.Controllers
             var nonfriends = _context.Users
                 .Where(u => u.UserId != _connectedUser.UserId)
                 .Where(u => !u.FriendsOf.Any(f => f.UserId == _connectedUser.UserId))
-                .Select(u=>new ProfileViewModel
+                .Select(u => new ProfileViewModel
                 {
                     UserId = u.UserId,
                     FirstName = u.FirstName,
@@ -96,7 +88,7 @@ namespace SuperBestFriends.Web.Controllers
                 _connectedUser.Friends.Add(newFriend);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(People));
         }
 
         public async Task<IActionResult> RemoveFriend(string userId)
