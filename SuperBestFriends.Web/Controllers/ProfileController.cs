@@ -14,17 +14,10 @@ namespace SuperBestFriends.Web.Controllers
 {
     public class ProfileController : Controller
     {
-        private readonly FriendsDbContext _context;
         private readonly HttpClient httpClient;
 
-        private readonly User? _connectedUser;
-        public long connectedUserId = 3;
-        public UserProfileDto connectedUser { get; set; }
-        //public ProfileController(FriendsDbContext context)
-        //{
-        //    _context = context;
-        //    _connectedUser = context.Users.Include(f => f.Friends).FirstOrDefault(m => m.UserId == 1);
-        //}
+        private long connectedUserId = 3;
+        private UserProfileDto connectedUser { get; set; }
         public ProfileController(IHttpClientFactory httpClientFactory)
         {
             this.httpClient = httpClientFactory.CreateClient("SuperBestFriendsAPI");
@@ -45,7 +38,6 @@ namespace SuperBestFriends.Web.Controllers
             return View(userVm);
         }
 
-
         public async Task<IActionResult> People()
         {
             var httpResponse = await this.httpClient.GetAsync($"api/friends/{connectedUserId}");
@@ -58,24 +50,6 @@ namespace SuperBestFriends.Web.Controllers
             var nonFriendsVm = nonFriendsFromApi?.Select(ProfileViewModel.FriendFromDto).ToList() ?? new List<ProfileViewModel>();
 
             return View(nonFriendsVm);
-        }
-
-        // GET: Users/Details/5
-        public async Task<IActionResult> Details(long? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _context.Users
-                .FirstOrDefaultAsync(m => m.UserId == id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return View(user);
         }
 
         public async Task<IActionResult> AddFriend(long userId, long friendId)
@@ -147,13 +121,5 @@ namespace SuperBestFriends.Web.Controllers
 
             return RedirectToAction(nameof(Index));
         }
-
-
-        private bool UserExists(long id)
-        {
-            return _context.Users.Any(e => e.UserId == id);
-        }
-
-
     }
 }

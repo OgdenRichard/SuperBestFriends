@@ -42,6 +42,9 @@ namespace SuperBestFriends.Web.Models.Profile
         [Display(Name = "Numéro de téléphone")]
         public string PhoneNumber { get; set; } = string.Empty;
 
+        [Display(Name = "Adresse")]
+        public string Address { get; set; } = string.Empty;
+
         [Display(Name = "Centres d'intérêt")]
         public string Interests { get; set; } = string.Empty;
 
@@ -63,6 +66,7 @@ namespace SuperBestFriends.Web.Models.Profile
                 BirthDate = user.BirthDate,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
+                Address = user.Address,
                 Interests = user.Interests,
                 Friends = user.Friends.ToList()
             };
