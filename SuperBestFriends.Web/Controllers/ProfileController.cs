@@ -25,37 +25,11 @@ namespace SuperBestFriends.Web.Controllers
         public ProfileController(IHttpClientFactory httpClientFactory)
         {
             this.httpClient = httpClientFactory.CreateClient("SuperBestFriendsAPI");
-            //_context = context;
         }
 
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            //var friendIds = _connectedUser.Friends.Select(f => f.UserId).ToList();
-
-            //var users = _context.Users.Select(u => new ProfileViewModel
-            //{
-            //    UserId = u.UserId,
-            //    FirstName = u.FirstName,
-            //    LastName = u.LastName,
-            //    BirthDate = u.BirthDate,
-            //    IsFriend = friendIds.Contains(u.UserId)
-            //});
-
-            //var usersList = await users.ToListAsync();
-
-            //var profileUser = new ProfileViewModel
-            //{
-            //    UserId = _connectedUser.UserId,
-            //    FirstName = _connectedUser.FirstName,
-            //    LastName = _connectedUser.LastName,
-            //    BirthDate = _connectedUser.BirthDate,
-            //    Email = _connectedUser.Email,
-            //    PhoneNumber = _connectedUser.PhoneNumber,
-            //    Interests = _connectedUser.Interests,
-            //    People = usersList
-            //};
-
             var httpResponse = await this.httpClient.GetAsync($"api/users/{connectedUserId}");
 
             if(!httpResponse.IsSuccessStatusCode)
@@ -80,17 +54,6 @@ namespace SuperBestFriends.Web.Controllers
 
             var nonFriendsVm = nonFriendsFromApi?.Select(ProfileViewModel.FriendFromDto).ToList() ?? new List<ProfileViewModel>();
 
-            //var nonfriends = _context.Users
-            //    .Where(u => u.UserId != _connectedUser.UserId)
-            //    .Where(u => !u.FriendsOf.Any(f => f.UserId == _connectedUser.UserId))
-            //    .Select(u => new ProfileViewModel
-            //    {
-            //        UserId = u.UserId,
-            //        FirstName = u.FirstName,
-            //        LastName = u.LastName,
-            //        BirthDate = u.BirthDate,
-            //    });
-            //var vm = await nonfriends.ToListAsync();
             return View(nonFriendsVm);
         }
 
