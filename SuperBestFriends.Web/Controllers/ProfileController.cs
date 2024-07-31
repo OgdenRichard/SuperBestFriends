@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SuperBestFriends.Business.DataTransfertObjects;
+//using SuperBestFriends.DAL;
 using SuperBestFriends.Web.DAL;
 using SuperBestFriends.Web.DAL.Entities;
 using SuperBestFriends.Web.Models.Profile;
@@ -15,6 +16,7 @@ namespace SuperBestFriends.Web.Controllers
         private readonly HttpClient httpClient;
 
         private readonly User? _connectedUser;
+        public long connectedUserId = 3;
         //public ProfileController(FriendsDbContext context)
         //{
         //    _context = context;
@@ -23,6 +25,7 @@ namespace SuperBestFriends.Web.Controllers
         public ProfileController(IHttpClientFactory httpClientFactory)
         {
             this.httpClient = httpClientFactory.CreateClient("SuperBestFriendsAPI");
+            //_context = context;
         }
 
         // GET: Users
@@ -53,7 +56,7 @@ namespace SuperBestFriends.Web.Controllers
             //    People = usersList
             //};
 
-            var httpResponse = await this.httpClient.GetAsync($"api/users/{1}");
+            var httpResponse = await this.httpClient.GetAsync($"api/users/{connectedUserId}");
 
             if(!httpResponse.IsSuccessStatusCode)
                 return NotFound();
@@ -68,7 +71,7 @@ namespace SuperBestFriends.Web.Controllers
 
         public async Task<IActionResult> People()
         {
-            var httpResponse = await this.httpClient.GetAsync($"api/friends/{1}");
+            var httpResponse = await this.httpClient.GetAsync($"api/friends/{connectedUserId}");
 
             if (!httpResponse.IsSuccessStatusCode)
                 return NotFound();
@@ -109,27 +112,50 @@ namespace SuperBestFriends.Web.Controllers
             return View(user);
         }
 
-        public async Task<IActionResult> AddFriend(string userId)
+        public async Task<IActionResult> AddFriend(long userId, long friendId)
         {
-            long friendId = Convert.ToInt64(userId);
-            if (friendId != 0 && UserExists(friendId))
+            userId = this.connectedUserId;
+
+            var friendRequest = new FriendRequest
             {
-                User newFriend = _context.Users.FirstOrDefault(u => u.UserId == friendId);
-                _connectedUser.Friends.Add(newFriend);
-                await _context.SaveChangesAsync();
+                UserId = userId,
+                FriendId = friendId
+            };
+
+            var httpResponse = await this.httpClient.PostAsJsonAsync("api/users/addFriend", friendRequest);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                var error = await httpResponse.Content.ReadAsStringAsync();
+                return BadRequest(error);
             }
-            return RedirectToAction(nameof(Index));
+
+            return RedirectToAction(nameof(People));
         }
 
-        public async Task<IActionResult> RemoveFriend(string userId)
+        public async Task<IActionResult> RemoveFriend(long userId, long friendId)
         {
-            long friendId = Convert.ToInt64(userId);
-            if (friendId != 0 && UserExists(friendId))
+            userId = this.connectedUserId;
+
+            var friendRequest = new FriendRequest
             {
-                User newFriend = _context.Users.FirstOrDefault(u => u.UserId == friendId);
-                _connectedUser.Friends.Remove(newFriend);
-                await _context.SaveChangesAsync();
+                UserId = userId,
+                FriendId = friendId
+            };
+
+            var httpRequest = new HttpRequestMessage(HttpMethod.Delete, "api/users/removeFriend")
+            {
+                Content = JsonContent.Create(friendRequest)
+            };
+
+            var httpResponse = await this.httpClient.SendAsync(httpRequest);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                var error = await httpResponse.Content.ReadAsStringAsync();
+                return BadRequest(error);
             }
+
             return RedirectToAction(nameof(Index));
         }
 

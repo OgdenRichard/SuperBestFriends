@@ -61,20 +61,21 @@ namespace SuperBestFriends.API.Controllers
         }
 
         // Ajout d'un ami
-        [HttpPost]
-        public async Task<ActionResult> AddFriendAsync(long userId, long friendId)
+        [HttpPost("addFriend")]
+        public async Task<ActionResult> AddFriendAsync([FromBody] UserFriendInput friendRequest)
         {
-            var isSuccess = await this.userService.AddFriendAsync(userId, friendId);
+            var isSuccess = await this.userService.AddFriendAsync(friendRequest.userId, friendRequest.friendId);
             if (!isSuccess)
                 return BadRequest("Unable to add your new friend.");
 
             return Ok("You've got a new friend !");
         }
 
-        [HttpDelete]
-        public async Task<ActionResult> RemoveFriendAsync(long userId, long friendId)
+        // Suppression d'un ami
+        [HttpDelete("removeFriend")]
+        public async Task<ActionResult> RemoveFriendAsync([FromBody] UserFriendInput friendRequest)
         {
-            var isSuccess = await this.userService.RemoveFriendAsync(userId, friendId);
+            var isSuccess = await this.userService.RemoveFriendAsync(friendRequest.userId, friendRequest.friendId);
             if (!isSuccess)
                 return BadRequest("Unable to remove your friend");
 
